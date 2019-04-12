@@ -20,8 +20,8 @@ class Cqssc
     }
 
     /**
-     * @param $num
-     * @param $type
+     * @param array $num
+     * @param int $type
      * @return string
      */
     public function auto(array $num, int $type):string
@@ -259,7 +259,7 @@ class Cqssc
     }
 
     /**取斗牛大小
-     * @param $s
+     * @param string $s
      * @return string
      */
     public function dndx(string $s):string{
@@ -274,7 +274,7 @@ class Cqssc
     }
 
     /**取斗牛单双
-     * @param $s
+     * @param string $s
      * @return string
      */
     public function dnds(string $s):string{
@@ -288,7 +288,7 @@ class Cqssc
     }
 
     /**单双
-     * @param $ball
+     * @param int $ball
      * @return string
      */
     public function Ds(int $ball):string{
@@ -299,8 +299,9 @@ class Cqssc
         }
     }
 
+
     /**大小
-     * @param $ball
+     * @param int $ball
      * @return string
      */
     public function Dx(int $ball):string{
@@ -311,12 +312,13 @@ class Cqssc
         }
     }
 
+
     /**斗牛
-     * @param $n1
-     * @param $n2
-     * @param $n3
-     * @param $n4
-     * @param $n5
+     * @param int $n1
+     * @param int $n2
+     * @param int $n3
+     * @param int $n4
+     * @param int $n5
      * @return string
      */
     public function DouNu(int $n1,int $n2,int $n3,int $n4,int $n5):string{
