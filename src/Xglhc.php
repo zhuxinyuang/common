@@ -184,10 +184,10 @@ class Xglhc
     }
 
     /**总和大小
-     * @param $num
+     * @param int $num
      * @return string
      */
- public   function ZongHeDaXiao($num)
+ public   function ZongHeDaXiao(int $num):string
     {
         if ($num >= 175) {
             return '总和大';
@@ -197,7 +197,7 @@ class Xglhc
     }
 
 //六合彩正码转换成开奖号
- public   function ZhengMaToNum($haoma)
+ public   function ZhengMaToNum(string $haoma):int
     {
         if ($haoma == "正一") {
             return 1;
@@ -214,14 +214,14 @@ class Xglhc
         }
     }
 
-  public  function ZhengMaGuoGuang($haoma, $num)
+  public  function ZhengMaGuoGuang(int $haoma,string $num):bool
     {
         if (($num == "大" || $num == "小") && $this->DaXiao($haoma) == $num) {
             return true;
         } else {
             return false;
         }
-        if (($num == "单" || $num == "双") && $this->_DanShuang($haoma) == $num) {
+        if (($num == "单" || $num == "双") && $this->DanShuang($haoma) == $num) {
             return true;
         } else {
             return false;
