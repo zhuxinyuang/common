@@ -324,61 +324,61 @@ class Cqssc
             if (intval($n4 + $n5) == 0 || intval($n4 + $n5) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n4 + $n5) % 10);
+                return "牛" . (string)(intval($n4 + $n5) % 10);
             }
         } elseif (intval(($n1 + $n2 + $n4) % 10) == 0) {
             if (intval($n3 + $n5) == 0 || intval($n3 + $n5) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n3 + $n5) % 10);
+                return "牛" .(string)(intval($n3 + $n5) % 10);
             }
         } elseif (intval(($n1 + $n2 + $n5) % 10) == 0) {
             if (intval($n3 + $n4) == 0 || intval($n3 + $n4) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n3 + $n4) % 10);
+                return "牛" . (string)(intval($n3 + $n4) % 10);
             }
         } elseif (intval(($n1 + $n3 + $n4) % 10) == 0) {
             if (intval($n2 + $n5) == 0 || intval($n2 + $n5) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n2 + $n5) % 10);
+                return "牛" . (string)(intval($n2 + $n5) % 10);
             }
         } elseif (intval(($n1 + $n3 + $n5) % 10) == 0) {
             if (intval($n2 + $n4) == 0 || intval($n2 + $n4) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n2 + $n4) % 10);
+                return "牛" . (string)(intval($n2 + $n4) % 10);
             }
         } elseif (intval(($n1 + $n4 + $n5) % 10) == 0) {
             if (intval($n2 + $n3) == 0 || intval($n2 + $n3) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n2 + $n3) % 10);
+                return "牛" . (string)(intval($n2 + $n3) % 10);
             }
         } elseif (intval(($n2 + $n3 + $n4) % 10) == 0) {
             if (intval($n1 + $n5) == 0 || intval($n1 + $n5) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n1 + $n5) % 10);
+                return "牛" . (string)(intval($n1 + $n5) % 10);
             }
         } elseif (intval(($n2 + $n3 + $n5) % 10) == 0) {
             if (intval($n1 + $n4) == 0 || intval($n1 + $n4) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n1 + $n4) % 10);
+                return "牛" . (string)(intval($n1 + $n4) % 10);
             }
         } elseif (intval(($n2 + $n4 + $n5) % 10) == 0) {
             if (intval($n1 + $n3) == 0 || intval($n1 + $n3) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n1 + $n3) % 10);
+                return "牛" . (string)(intval($n1 + $n3) % 10);
             }
         } elseif (intval(($n3 + $n4 + $n5) % 10) == 0) {
             if (intval($n1 + $n2) == 0 || intval($n1 + $n2) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (intval($n1 + $n2) % 10);
+                return "牛" . (string)(intval($n1 + $n2) % 10);
             }
         } else {
             return "没牛";
