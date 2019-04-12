@@ -1,0 +1,20 @@
+{
+    "name": "zhuxinyuang/common",
+    "description": "Lottery common",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zhu",
+            "email": "147317963@qq.com"
+        }
+    ],
+	"autoload": {
+		"psr-4": {
+			"Zhuxinyuang\\common\\": "src/"
+		}
+	},
+    "minimum-stability": "stable",
+    "require" : {
+		"php" : ">=7.0.0"
+	}
+}
