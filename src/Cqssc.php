@@ -20,8 +20,8 @@ class Cqssc
     }
 
     /**
-     * @param array $num
-     * @param int $type
+     * @param $num
+     * @param $type
      * @return string
      */
     public function auto(array $num, int $type):string
@@ -259,7 +259,7 @@ class Cqssc
     }
 
     /**取斗牛大小
-     * @param string $s
+     * @param $s
      * @return string
      */
     public function dndx(string $s):string{
@@ -274,7 +274,7 @@ class Cqssc
     }
 
     /**取斗牛单双
-     * @param string $s
+     * @param $s
      * @return string
      */
     public function dnds(string $s):string{
@@ -288,7 +288,7 @@ class Cqssc
     }
 
     /**单双
-     * @param int $ball
+     * @param $ball
      * @return string
      */
     public function Ds(int $ball):string{
@@ -299,9 +299,8 @@ class Cqssc
         }
     }
 
-
     /**大小
-     * @param int $ball
+     * @param $ball
      * @return string
      */
     public function Dx(int $ball):string{
@@ -312,33 +311,32 @@ class Cqssc
         }
     }
 
-
     /**斗牛
-     * @param int $n1
-     * @param int $n2
-     * @param int $n3
-     * @param int $n4
-     * @param int $n5
+     * @param $n1
+     * @param $n2
+     * @param $n3
+     * @param $n4
+     * @param $n5
      * @return string
      */
-    public function DouNu(int $n1,int $n2,int $n3,int $n4,int $n5):string{
+    public function DouNu(int $n1,int $n2,int $n3,int $n4,int $n5){
         if (intval(($n1 + $n2 + $n3) % 10) == 0) {
             if (intval($n4 + $n5) == 0 || intval($n4 + $n5) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n4 + $n5) % 10);
+                return "牛" . (intval($n4 + $n5) % 10);
             }
         } elseif (intval(($n1 + $n2 + $n4) % 10) == 0) {
             if (intval($n3 + $n5) == 0 || intval($n3 + $n5) == 10) {
                 return "牛牛";
             } else {
-                return "牛" .(string)(intval($n3 + $n5) % 10);
+                return "牛" .(intval($n3 + $n5) % 10);
             }
         } elseif (intval(($n1 + $n2 + $n5) % 10) == 0) {
             if (intval($n3 + $n4) == 0 || intval($n3 + $n4) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n3 + $n4) % 10);
+                return "牛" . (intval($n3 + $n4) % 10);
             }
         } elseif (intval(($n1 + $n3 + $n4) % 10) == 0) {
             if (intval($n2 + $n5) == 0 || intval($n2 + $n5) == 10) {
@@ -350,13 +348,13 @@ class Cqssc
             if (intval($n2 + $n4) == 0 || intval($n2 + $n4) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n2 + $n4) % 10);
+                return "牛" . (intval($n2 + $n4) % 10);
             }
         } elseif (intval(($n1 + $n4 + $n5) % 10) == 0) {
             if (intval($n2 + $n3) == 0 || intval($n2 + $n3) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n2 + $n3) % 10);
+                return "牛" . (intval($n2 + $n3) % 10);
             }
         } elseif (intval(($n2 + $n3 + $n4) % 10) == 0) {
             if (intval($n1 + $n5) == 0 || intval($n1 + $n5) == 10) {
@@ -368,19 +366,19 @@ class Cqssc
             if (intval($n1 + $n4) == 0 || intval($n1 + $n4) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n1 + $n4) % 10);
+                return "牛" . (intval($n1 + $n4) % 10);
             }
         } elseif (intval(($n2 + $n4 + $n5) % 10) == 0) {
             if (intval($n1 + $n3) == 0 || intval($n1 + $n3) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n1 + $n3) % 10);
+                return "牛" . (intval($n1 + $n3) % 10);
             }
         } elseif (intval(($n3 + $n4 + $n5) % 10) == 0) {
             if (intval($n1 + $n2) == 0 || intval($n1 + $n2) == 10) {
                 return "牛牛";
             } else {
-                return "牛" . (string)(intval($n1 + $n2) % 10);
+                return "牛" . (intval($n1 + $n2) % 10);
             }
         } else {
             return "没牛";
