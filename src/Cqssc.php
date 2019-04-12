@@ -28,7 +28,7 @@ class Cqssc
     {
         $zh = $num[0] + $num[1] + $num[2] + $num[3] + $num[4];
         if ($type == 1) {
-            return $zh;
+            return (string)$zh;
         }
         if ($type == 2) {
             if ($zh >= 23) {

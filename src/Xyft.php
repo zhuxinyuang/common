@@ -54,7 +54,7 @@ class Xyft
   public  function auto(array $num , int $type):string {
         $zh = $num[0]+$num[1];
         if($type==1){
-            return $zh;
+            return (string)$zh;
         }
         if($type==2){
             if($zh>11){
