@@ -126,7 +126,7 @@ class Caipiao
         }
         foreach ($actionlist as $key => $value) {
             if($this->time  >= strtotime($value['action_time']) &&   $this->time <= strtotime($value['stop_time'])){
-                $this->ActionNumber=(int)$value['number'];
+                $this->ActionNumber=(int)$value['action_no'];
                 $this->ActionTime=$value['action_time'];
                 $this->StopTime=$value['stop_time'];
                 break;
