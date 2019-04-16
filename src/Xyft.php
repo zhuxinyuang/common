@@ -13,7 +13,7 @@ class Xyft
      */
   public  function BuLings (int $num ):string {
         if ( $num<10 ) {
-            $num = '00'.$num;
+            $num = '00'.(string)$num;
         }
         if ( $num>=10 && $num<100 ) {
             $num = '0'.(string)$num;
