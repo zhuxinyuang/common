@@ -9,7 +9,7 @@ namespace zhuxinyuang;
 use Zhuxinyuang\common\Cqssc;
 use Zhuxinyuang\common\Xyft;
 
-class system
+class System
 {
     /**当前时间
      * @var int
