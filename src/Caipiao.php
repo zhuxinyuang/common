@@ -3,13 +3,13 @@
  * 必须安装think5.1 才能正常运行
  */
 declare(strict_types=1);
-namespace zhuxinyuang;
+namespace Zhuxinyuang\common;
 
 
 use Zhuxinyuang\common\Cqssc;
 use Zhuxinyuang\common\Xyft;
 
-class System
+class Caipiao
 {
     /**当前时间
      * @var int
@@ -61,7 +61,7 @@ class System
     /**计算彩票开奖期数
      * @param int $type 彩票类型
      * @param array $list 数据库获取时间
-     * @return int
+     * @return int 返回彩票处理的真实期号
      */
     public function GetLotteryNumber():int{
 
