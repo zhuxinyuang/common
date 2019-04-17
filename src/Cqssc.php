@@ -20,7 +20,7 @@ class Cqssc
             $num = '0'.(string)$num;
         }
 
-        return $num;
+        return (string)$num;
 
     }
 

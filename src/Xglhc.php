@@ -104,7 +104,7 @@ class Xglhc
             return '49';
 
         }
-        $zhws = substr($num, strlen($num) - 1);
+        $zhws = substr((string)$num, strlen((string)$num) - 1);
         if ($zhws >= 5) {
             return '尾大';
         } else {
@@ -122,7 +122,7 @@ class Xglhc
             return '49';
 
         }
-        $zhws = substr($num, strlen($num) - 1);
+        $zhws = substr((string)$num, strlen((string)$num) - 1);
         if ($num % 2 == 0) {
             return '尾双';
         } else {
@@ -140,8 +140,8 @@ class Xglhc
             return '49';
 
         }
-        $num1 = substr($num, 0, 1);
-        $num2 = substr($num, 1, 1);
+        $num1 = substr((string)$num, 0, 1);
+        $num2 = substr((string)$num, 1, 1);
         $num3 = $num1 + $num2;
         if ($num3 > 6) {
             return '合大';
@@ -160,8 +160,8 @@ class Xglhc
             return '49';
 
         }
-        $num1 = substr($num, 0, 1);
-        $num2 = substr($num, 1, 1);
+        $num1 = substr((string)$num, 0, 1);
+        $num2 = substr((string)$num, 1, 1);
         $num3 = $num1 + $num2;
         if ($num3 % 2 == 0) {
             return '合双';
@@ -268,30 +268,46 @@ class Xglhc
   public  function Fanwei(int $hm):string
   {
         if($hm >= 1 && $hm <=10){
+
             return '1-10';
+
         }elseif($hm >= 11 &&$hm <=20){
+
             return '11-20';
+
         }elseif($hm >=21 && $hm <=30){
+
             return '21-30';
+
         }elseif($hm >= 31 && $hm <=40){
+
             return '31-40';
+
         }elseif($hm >= 41 && $hm <=49){
+
             return '41-49';
+
         }
     }
 
   public  function ShengXiao(int $hm, int $time):string
     {
         $today = date("Y-m-d", $time + 1 * 12 * 3600);
+
         $lunar = new Lunar();
 
         $year = date("Y", $lunar->S2L($today));
+
         $hm = $hm % 12;
+
         $arr = ['猴', '鸡', '狗', '猪', '鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊'];
 
         if (preg_match("/^\d{4}$/", $year)) {
+
             $m = $year % 12;
+
             $x = $arr[$m];
+
         }
 
         switch ($x) {
