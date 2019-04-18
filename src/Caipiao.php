@@ -82,8 +82,6 @@ class Caipiao
         }
 
 
-
-
     }
 
 
@@ -229,7 +227,7 @@ class Caipiao
 
 
     /**获取单个最新开奖号码
-     * @return array
+     * @return object
      */
     public function GetAutoFind():object {
 

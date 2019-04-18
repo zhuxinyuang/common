@@ -74,7 +74,7 @@ class Xglhc
         if ( $num<10 ) {
             $num = '0'.(string)$num;
         }
-        return $num;
+        return (string)$num;
     }
 
     /**取大小
