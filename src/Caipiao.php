@@ -14,43 +14,45 @@ class Caipiao
     /**当前时间
      * @var int
      */
-    public  $time;
-    /**彩票类型
+    public $time;
+    /**彩票类型  1:重庆时时彩 50：北京赛车 55：幸运飞艇 99：极速赛车
      * @int
      */
-    public  $type;
+    public $type;
 
     /**时间获取的期号
      * @int
      */
-    private $ActionNumber;
+    private $actionNumber;
 
 
     /**彩票期号
      * @int
      */
-    public  $number;
+    public $number;
     /**开始时间
      * @var
      */
-    public $ActionTime;
+    public $actionTime;
     /**结束时间
      * @var
      */
-    public $StopTime;
+    public $stopTime;
     /**赔率
      * @array
      */
-    public $OddsList = [];
+    public $oddsList = [];
     /**开奖model
      * @var \app\index\model\JsscAutoModel
      */
-    private $AutoModel;
+    private $autoModel;
+
     /**
      * 架构函数
      * @access public
      */
-    public function __construct(int $type = 50){
+    public function __construct(int $type = 50)
+    {
 
         $this->time = time();
 
@@ -58,28 +60,9 @@ class Caipiao
 
         $this->number = $this->GetLotteryNumber();
 
-        $this->OddsList = $this->GetOddsList();
+        $this->oddsList = $this->GetOddsList();
 
-        if ($this->type == 1) {
 
-            $this->AutoModel = new \app\index\model\CqsscAutoModel();
-
-        } else if ($this->type == 50) {
-
-            $this->AutoModel = new \app\index\model\BjscAutoModel();
-
-        } else if ($this->type == 55) {
-
-            $this->AutoModel = new \app\index\model\XyftAutoModel();
-
-        } else if ($this->type == 70) {
-
-            $this->AutoModel = new \app\index\model\XglhcAutoModel();
-
-        } else if ($this->type == 99) {
-
-            $this->AutoModel = new \app\index\model\JsscAutoModel();
-        }
 
 
     }
@@ -90,10 +73,11 @@ class Caipiao
      * @param array $list 数据库获取时间
      * @return string 返回彩票处理的真实期号
      */
-    private function GetLotteryNumber():string {
+    public function GetLotteryNumber(): string
+    {
 
-
-        if(empty($this->ActionNumber) || empty($this->ActionTime) || empty($this->StopTime)){
+        //其中里面一个没有赋值  就执行获取开盘封盘的时间和期号
+        if (empty($this->actionNumber) === true || empty($this->actionTime) === true || empty($this->stopTime) === true) {
 
             $this->GetActionTime();
         }
@@ -101,15 +85,15 @@ class Caipiao
 
         if ($this->type == 50) {
             //北京赛车PK拾
-            $action_no = (string)(44 * ((strtotime(date('Y-m-d', $this->time)) - strtotime('2019-2-11')) / 3600 / 24) + $this->ActionNumber + 729391);
+            $action_no = (string)(44 * ((strtotime(date('Y-m-d', $this->time)) - strtotime('2019-2-11')) / 3600 / 24) + $this->actionNumber + 729391);
 
         } elseif ($this->type == 55) {
             //幸运飞艇
-            $number = (new Xyft())->BuLings($this->ActionNumber);
+            $number = (new Xyft())->BuLings($this->actionNumber);
             //幸运飞艇大于132 算第二天的时间 但官方会算昨天的
             if ($number >= 132) {
 
-                $action_no = (string)(date('Ymd', strtotime('-1 day', $this->time)) . (string)$this->ActionNumber);
+                $action_no = (string)(date('Ymd', strtotime('-1 day', $this->time)) . (string)$this->actionNumber);
 
             } else {
 
@@ -118,23 +102,23 @@ class Caipiao
             }
         } elseif ($this->type == 99) {
             //极速赛车
-            $action_no = (string)(((strtotime(date('Y-m-d', $this->time)) - strtotime('2017-6-16')) / 3600 / 24 - 1) * 1152 + ($this->ActionNumber + 30264272));
+            $action_no = (string)(((strtotime(date('Y-m-d', $this->time)) - strtotime('2017-6-16')) / 3600 / 24 - 1) * 1152 + ($this->actionNumber + 30264272));
 
         } elseif ($this->type == 1) {
             //重庆时时彩
-            $action_no = (string)(date('Ymd', $this->time) . (new Cqssc())->BuLings($this->ActionNumber));
+            $action_no = (string)(date('Ymd', $this->time) . (new Cqssc())->BuLings($this->actionNumber));
 
         } elseif ($this->type == 70) {
             //香港六合彩
-            $action_no = (string)$this->ActionNumber;
+            $action_no = (string)$this->actionNumber;
 
         } elseif ($this->type == 77) {
             //私人彩种
-            $action_no = (string)(date('Ymd', $this->time) . (string)$this->ActionNumber);
+            $action_no = (string)(date('Ymd', $this->time) . (string)$this->actionNumber);
 
         } elseif ($this->type == 88) {
             //私人彩种
-            $action_no = (string)(date('Ymd', $this->time) . (string)$this->ActionNumber);
+            $action_no = (string)(date('Ymd', $this->time) . (string)$this->actionNumber);
 
         }
 
@@ -144,56 +128,73 @@ class Caipiao
     /**获取彩票封盘时间
      * @return void
      */
-    private function GetActionTime(): void {
+    private function GetActionTime(): void
+    {
         //获得缓存中的开奖时间
-        $actionlist = \think\facade\Cache::store('redis')->get('action_list_' . (string)$this->type);
+        $actionlist = \think\facade\Cache::store('redis')->get(config('code.actionlist') . (string)$this->type);
 
         if (!$actionlist) {
 
             $map[] = ['type', '=', $this->type];
 
             //判断是否是香港六合彩
-            if($this->type == 70){
+            if ($this->type == 70) {
 
                 $actionlist = (new \app\index\model\XglhcTimeModel())->where($map)->order('action_no asc')->select();
 
-            }else{
+            } else {
                 //其他彩票
                 $actionlist = (new \app\index\model\LotteryTimeModel())->where($map)->order('action_no asc')->select();
 
             }
 
-            \think\facade\Cache::store('redis')->set('action_list_' . (string)$this->type, $actionlist,'600');
+            \think\facade\Cache::store('redis')->set(config('code.actionlist') . (string)$this->type, $actionlist, '600');
 
         }
+
+
+
         foreach ($actionlist as $key => $value) {
 
-            if($this->time  >= strtotime($value['action_time']) &&   $this->time <= strtotime($value['stop_time'])){
+            if ($this->time >= strtotime($value['action_time']) && $this->time <= strtotime($value['stop_time'])) {
 
-                $this->ActionNumber=(int)$value['action_no'];
+                $this->actionNumber = (int)$value['action_no'];
 
-                $this->ActionTime=$value['action_time'];
+                $this->actionTime = $value['action_time'];
 
-                $this->StopTime=$value['stop_time'];
+                $this->stopTime = $value['stop_time'];
 
                 break;
 
             }
         }
-        if($this->type == 70){
 
-            $this->ActionTime = strtotime($this->ActionTime) - $this->time;
+        //处理香港六合彩没开盘
+        if($this->actionNumber == null && $key == count($actionlist)- 1 && $this->type == 70){
 
-            $this->StopTime =  strtotime($this->StopTime) - $this->time;
+            $this->actionNumber = $actionlist[$key]['action_no'];
 
-        }else{
+            $this->actionTime = $actionlist[$key]['action_time'];
 
-            $this->ActionTime = strtotime(date("Y-m-d", $this->time) . ' ' . $this->ActionTime) - $this->time;
-
-            $this->StopTime = strtotime(date("Y-m-d", $this->time) . ' ' . $this->StopTime) - $this->time;
-
+            $this->stopTime = $actionlist[$key]['stop_time'];
         }
 
+
+
+        //处理香港六合彩时间
+        if ($this->type == 70) {
+
+            $this->actionTime = strtotime($this->actionTime) - $this->time;
+
+            $this->stopTime = strtotime($this->stopTime) - $this->time;
+
+        } else {
+            //其他彩种格式统一
+            $this->actionTime = strtotime(date("Y-m-d", $this->time) . ' ' . $this->actionTime) - $this->time;
+
+            $this->stopTime = strtotime(date("Y-m-d", $this->time) . ' ' . $this->stopTime) - $this->time;
+
+        }
 
 
     }
@@ -202,22 +203,23 @@ class Caipiao
      * @return array
      */
 
-    private function GetOddsList():array {
+    private function GetOddsList(): array
+    {
         //赔率列表整理
-        $oddslist = \think\facade\Cache::store('redis')->get('oddslist_' . $this->type);
+        $oddslist = \think\facade\Cache::store('redis')->get(config('code.oddslist'). $this->type);
 
         if (!$oddslist) {
 
             $oddslist = [];
 
-            $odds = (new \app\index\model\OddsModel()) ->where(['type' => $this->type])->select();
+            $odds = (new \app\index\model\OddsModel())->where(['type' => $this->type])->select();
 
             foreach ($odds as $key => $value) {
 
                 $oddslist[$value['id']] = $value;
             }
 
-            \think\facade\Cache::store('redis')->set('oddslist_' . $this->type, $oddslist,'600');
+            \think\facade\Cache::store('redis')->set(config('code.oddslist') . $this->type, $oddslist, '600');
 
         }
 
@@ -226,18 +228,49 @@ class Caipiao
     }
 
 
+    /**
+     * 获得当前开奖model
+     */
+    private  function GetAutoMode(){
+
+        if ($this->type == 1) {
+
+            $this->autoModel = new \app\index\model\CqsscAutoModel();
+
+        } else if ($this->type == 50) {
+
+            $this->autoModel = new \app\index\model\BjscAutoModel();
+
+        } else if ($this->type == 55) {
+
+            $this->autoModel = new \app\index\model\XyftAutoModel();
+
+        } else if ($this->type == 70) {
+
+            $this->autoModel = new \app\index\model\XglhcAutoModel();
+
+        } else if ($this->type == 99) {
+
+            $this->autoModel = new \app\index\model\JsscAutoModel();
+        }
+    }
+
     /**获取单个最新开奖号码
      * @return object
      */
-    public function GetAutoFind():object {
+    public function GetAutoFind(): object
+    {
+        //模型没有就NEW 模型
+        if(empty($this->autoModel) === true) $this->GetAutoMode();
 
-        $list = \think\facade\Cache::store('redis')->get('auto_find_' . $this->type);
+
+        $list = \think\facade\Cache::store('redis')->get(config('code.autofind') . $this->type);
 
         if (!$list) {
 
-            $list = $this->AutoModel->order('number desc')->field('number,data')->find();
+            $list = $this->autoModel->order('number desc')->field('number,data')->find();
 
-            \think\facade\Cache::store('redis')->set('auto_find_' . $this->type, $list);
+            \think\facade\Cache::store('redis')->set(config('code.autofind') . $this->type, $list,'600');
         }
 
         return $list;
@@ -250,18 +283,33 @@ class Caipiao
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    private function GetAutolist():object {
+    private function GetAutolist(): object
+    {
+        //模型没有就NEW 模型
+        if(empty($this->autoModel) === true)  $this->NewAutoMode();
+
 
         $list = \think\facade\Cache::store('redis')->get('auto_list_' . $this->type);
 
         if (!$list) {
 
-            $list = $this->AutoModel->order('number desc')->field('number,data')->find();
+            $list = $this->autoModel->order('number desc')->field('number,data')->find();
 
-            \think\facade\Cache::store('redis')->set('auto_list_' . $this->type, $list);
+            \think\facade\Cache::store('redis')->set('auto_list_' . $this->type, $list,'600');
         }
 
         return $list;
 
     }
+
+    /**生成唯一订单ID
+     * @return string
+     */
+    public function SetOrderId(): string
+    {
+
+            return date('YmdHis') . str_pad((string)mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);;
+
+    }
+
 }

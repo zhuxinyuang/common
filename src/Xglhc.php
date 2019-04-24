@@ -7,6 +7,16 @@ namespace Zhuxinyuang\common;
 
 class Xglhc
 {
+    /**当前时间戳
+     * @int
+     */
+    private $time;
+
+    public function __construct()
+    {
+        $this->time = time();
+    }
+
     /**获取球号波色
      * @param string $num
      * @return string
@@ -101,14 +111,20 @@ class Xglhc
   public  function WeiShuDaXiao(int $num):string
     {
         if ($num == 49) {
+
             return '49';
 
         }
         $zhws = substr((string)$num, strlen((string)$num) - 1);
+
         if ($zhws >= 5) {
+
             return '尾大';
+
         } else {
+
             return '尾小';
+
         }
     }
 
@@ -119,14 +135,20 @@ class Xglhc
  public   function WeiShuDanShuang(int $num):string
     {
         if ($num == 49) {
+
             return '49';
 
         }
         $zhws = substr((string)$num, strlen((string)$num) - 1);
+
         if ($num % 2 == 0) {
+
             return '尾双';
+
         } else {
+
             return '尾单';
+
         }
     }
 
@@ -137,16 +159,25 @@ class Xglhc
  public   function HeShuDaXiao(int $num):string
     {
         if ($num == 49) {
+
             return '49';
 
         }
+
         $num1 = substr((string)$num, 0, 1);
+
         $num2 = substr((string)$num, 1, 1);
+
         $num3 = $num1 + $num2;
+
         if ($num3 > 6) {
+
             return '合大';
+
         } else {
+
             return '合小';
+
         }
     }
 
@@ -157,16 +188,24 @@ class Xglhc
  public   function HeShuDanShuang(int $num) :string
     {
         if ($num == 49) {
+
             return '49';
 
         }
         $num1 = substr((string)$num, 0, 1);
+
         $num2 = substr((string)$num, 1, 1);
+
         $num3 = $num1 + $num2;
+
         if ($num3 % 2 == 0) {
+
             return '合双';
+
         } else {
+
             return '合单';
+
         }
     }
 
@@ -177,9 +216,13 @@ class Xglhc
  public   function ZongHeDanShuang(int $num):string
     {
         if ($num % 2 == 0) {
+
             return '总和双';
+
         } else {
+
             return '总和单';
+
         }
     }
 
@@ -190,9 +233,13 @@ class Xglhc
  public   function ZongHeDaXiao(int $num):string
     {
         if ($num >= 175) {
+
             return '总和大';
+
         } else {
+
             return '总和小';
+
         }
     }
 
@@ -200,58 +247,91 @@ class Xglhc
  public   function ZhengMaToNum(string $haoma):int
     {
         if ($haoma == "正一") {
+
             return 1;
+
         } elseif ($haoma == "正二") {
+
             return 2;
+
         } elseif ($haoma == "正三") {
+
             return 3;
+
         } elseif ($haoma == "正四") {
+
             return 4;
+
         } elseif ($haoma == "正五") {
+
             return 5;
+
         } elseif ($haoma == "正六") {
+
             return 6;
+
         }
     }
 
   public  function ZhengMaGuoGuang(int $haoma,string $num):bool
     {
         if (($num == "大" || $num == "小") && $this->DaXiao($haoma) == $num) {
+
             return true;
         } else {
             return false;
         }
         if (($num == "单" || $num == "双") && $this->DanShuang($haoma) == $num) {
+
             return true;
+
         } else {
+
             return false;
+
         }
         if (($num == "合大" || $num == "合小") && $this->HeShuDaXiao($haoma) == $num) {
+
             return true;
+
         } else {
+
             return false;
+
         }
         if (($num == "合单" || $num == "合双") && $this->HeShuDanShuang($haoma) == $num) {
+
             return true;
+
         } else {
+
             return false;
+
         }
         if (($num == "尾大" || $num == "尾小") && $this->WeiShuDaXiao($haoma) == $num) {
+
             return true;
+
         } else {
+
             return false;
+
         }
         if (($num == "红波" || $num == "蓝波" || $num == "绿波") && $this->BoSe($haoma) == $num) {
+
             return true;
+
         } else {
+
             return false;
+
         }
     }
 
 //六合彩尾数函数
   public  function WeiShu(int $num):string
     {
-        return ($num % 10) . "尾";
+        return (string)($num % 10) . "尾";
 
     }
 //家禽野兽
@@ -259,9 +339,13 @@ class Xglhc
   {
 
         if ($sx == '猪' || $sx == '狗' || $sx == '鸡' || $sx == '羊' || $sx == '兔' || $sx == '牛') {
+
             return '家禽';
+
         }else{
+
             return '野兽';
+
         }
     }
 //1-49范围数字
@@ -290,9 +374,9 @@ class Xglhc
         }
     }
 
-  public  function ShengXiao(int $hm, int $time):string
+  public  function ShengXiao(int $hm):string
     {
-        $today = date("Y-m-d", $time + 1 * 12 * 3600);
+        $today = date("Y-m-d", $this->time + 1 * 12 * 3600);
 
         $lunar = new Lunar();
 
@@ -357,9 +441,9 @@ class Xglhc
         }
     }
 
-  public  function ShengXiaoPaiXu(int $time):array
+  public  function ShengXiaoPaiXu():array
     {
-        $today = date("Y-m-d", $time + 1 * 12 * 3600);
+        $today = date("Y-m-d", $this->time + 1 * 12 * 3600);
         $lunar = new Lunar();
         $year = date("Y", $lunar->S2L($today));
         $arr = ['猴', '鸡', '狗', '猪', '鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊'];
