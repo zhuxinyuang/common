@@ -89,7 +89,7 @@ class Caipiao
 
         } elseif ($this->type == 55) {
             //幸运飞艇
-            $number = (new Xyft())->BuLings($this->actionNumber);
+            $number = (new Xyft())->BuLings((int)$this->actionNumber);
             //幸运飞艇大于132 算第二天的时间 但官方会算昨天的
             if ($number >= 132) {
 
@@ -153,16 +153,15 @@ class Caipiao
         }
 
 
-
         foreach ($actionlist as $key => $value) {
 
             if ($this->time >= strtotime($value['action_time']) && $this->time <= strtotime($value['stop_time'])) {
 
                 $this->actionNumber = (int)$value['action_no'];
 
-                $this->actionTime = $value['action_time'];
+                $this->actionTime = strtotime($actionlist[$key]['action_time']);
 
-                $this->stopTime = $value['stop_time'];
+                $this->stopTime = strtotime($actionlist[$key]['stop_time']);
 
                 break;
 
@@ -170,31 +169,19 @@ class Caipiao
         }
 
         //处理香港六合彩没开盘
-        if($this->actionNumber == null && $key == count($actionlist)- 1 && $this->type == 70){
+        if ($this->actionNumber == null && $key == count($actionlist) - 1 && $this->type == 70) {
 
-            $this->actionNumber = $actionlist[$key]['action_no'];
+            $this->actionNumber = (int)$actionlist[$key]['action_no'];
 
-            $this->actionTime = $actionlist[$key]['action_time'];
+            $this->actionTime = strtotime($actionlist[$key]['action_time']);
 
-            $this->stopTime = $actionlist[$key]['stop_time'];
+            $this->stopTime = strtotime($actionlist[$key]['stop_time']);
         }
 
 
+        $this->actionTime = $this->actionTime - $this->time;
 
-        //处理香港六合彩时间
-        if ($this->type == 70) {
-
-            $this->actionTime = strtotime($this->actionTime) - $this->time;
-
-            $this->stopTime = strtotime($this->stopTime) - $this->time;
-
-        } else {
-            //其他彩种格式统一
-            $this->actionTime = strtotime(date("Y-m-d", $this->time) . ' ' . $this->actionTime) - $this->time;
-
-            $this->stopTime = strtotime(date("Y-m-d", $this->time) . ' ' . $this->stopTime) - $this->time;
-
-        }
+        $this->stopTime = $this->stopTime - $this->time;
 
 
     }
@@ -234,23 +221,27 @@ class Caipiao
     private  function GetAutoMode(){
 
         if ($this->type == 1) {
-
+            //重庆时时彩
             $this->autoModel = new \app\index\model\CqsscAutoModel();
 
         } else if ($this->type == 50) {
-
+            //北京PK拾
             $this->autoModel = new \app\index\model\BjscAutoModel();
 
         } else if ($this->type == 55) {
-
+            //幸运飞艇
             $this->autoModel = new \app\index\model\XyftAutoModel();
 
         } else if ($this->type == 70) {
-
+            //香港六合彩
             $this->autoModel = new \app\index\model\XglhcAutoModel();
 
-        } else if ($this->type == 99) {
+        }else if ($this->type == 88) {
+            //SG飞艇
+            $this->autoModel = new \app\index\model\SgftAutoModel();
 
+        }else if ($this->type == 99) {
+            //极速赛车
             $this->autoModel = new \app\index\model\JsscAutoModel();
         }
     }
@@ -289,13 +280,13 @@ class Caipiao
         if(empty($this->autoModel) === true)  $this->NewAutoMode();
 
 
-        $list = \think\facade\Cache::store('redis')->get('auto_list_' . $this->type);
+        $list = \think\facade\Cache::store('redis')->get(config('code.autolist') . $this->type);
 
         if (!$list) {
 
-            $list = $this->autoModel->order('number desc')->field('number,data')->find();
+            $list = $this->autoModel->order('number desc')->field('number,data')->select();
 
-            \think\facade\Cache::store('redis')->set('auto_list_' . $this->type, $list,'600');
+            \think\facade\Cache::store('redis')->set(config('code.autolist') . $this->type, $list,'600');
         }
 
         return $list;
@@ -307,9 +298,25 @@ class Caipiao
      */
     public function SetOrderId(): string
     {
+        return date('YmdHis') . str_pad((string)mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);;
 
-            return date('YmdHis') . str_pad((string)mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);;
+    }
 
+    /**获得彩票状态
+     * @return object\
+     */
+    public function GetLotteryStatus():object{
+        
+        $list = \think\facade\Cache::store('redis')->get(config('code.lotteryinfo') . $this->type);
+
+        if (!$list) {
+
+            $list = (new \app\index\model\LotteryTypeModel())->select();
+
+            \think\facade\Cache::store('redis')->set(config('code.lotteryinfo') . $this->type, $list,'600');
+        }
+
+        return $list;
     }
 
 }
