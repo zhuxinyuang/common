@@ -47,6 +47,9 @@ class Caipiao
      */
     private $autoModel;
 
+    private $timestamp;
+
+
     /**
      * 架构函数
      * @access public
@@ -85,7 +88,8 @@ class Caipiao
 
         if ($this->type == 50) {
             //北京赛车PK拾
-            $action_no = (string)(44 * ((strtotime(date('Y-m-d', $this->time)) - strtotime('2019-2-11')) / 3600 / 24) + $this->actionNumber + 729391);
+
+            $action_no = (string)(44 * ((strtotime(date('Y-m-d', $this->timestamp)) - strtotime('2019-2-11')) / 3600 / 24) + $this->actionNumber + 729391);
 
         } elseif ($this->type == 55) {
             //幸运飞艇
@@ -93,20 +97,20 @@ class Caipiao
             //幸运飞艇大于132 算第二天的时间 但官方会算昨天的
             if ($number >= 132) {
 
-                $action_no = (string)(date('Ymd', strtotime('-1 day', $this->time)) . (string)$this->actionNumber);
+                $action_no = (string)(date('Ymd', strtotime('-1 day', $this->timestamp)) . (string)$this->actionNumber);
 
             } else {
 
-                $action_no = (string)date('Ymd', $this->time) . $number;
+                $action_no = (string)date('Ymd', $this->timestamp) . $number;
 
             }
         } elseif ($this->type == 99) {
             //极速赛车
-            $action_no = (string)(((strtotime(date('Y-m-d', $this->time)) - strtotime('2017-6-16')) / 3600 / 24 - 1) * 1152 + ($this->actionNumber + 30264272));
+            $action_no = (string)(((strtotime(date('Y-m-d', $this->timestamp)) - strtotime('2017-6-16')) / 3600 / 24 - 1) * 1152 + ($this->actionNumber + 30264272));
 
         } elseif ($this->type == 1) {
             //重庆时时彩
-            $action_no = (string)(date('Ymd', $this->time) . (new Cqssc())->BuLings($this->actionNumber));
+            $action_no = (string)(date('Ymd', $this->timestamp) . (new Cqssc())->BuLings($this->actionNumber));
 
         } elseif ($this->type == 70) {
             //香港六合彩
@@ -114,11 +118,12 @@ class Caipiao
 
         } elseif ($this->type == 77) {
             //私人彩种
-            $action_no = (string)(date('Ymd', $this->time) . (string)$this->actionNumber);
+            $action_no = (string)(date('Ymd', $this->timestamp) . (string)$this->actionNumber);
 
         } elseif ($this->type == 88) {
             //私人彩种
-            $action_no = (string)(date('Ymd', $this->time) . (string)$this->actionNumber);
+            $number = (new Xyft())->BuLings((int)$this->actionNumber);
+            $action_no = (string)(date('Ymd', $this->timestamp) . $number);
 
         }
 
@@ -167,6 +172,102 @@ class Caipiao
 
             }
         }
+        //处理时时彩
+        if($this->actionNumber == null && $this->type == 1 && $this->time > strtotime(date('Y-m-d') .'03:10:00') && $this->time < strtotime(date('Y-m-d') .'07:10:00')){
+
+            $this->actionNumber = 10;
+
+            $this->actionTime = strtotime(date('Y-m-d') .'07:10:00');
+
+            $this->stopTime = strtotime(date('Y-m-d') .'07:30:00');
+
+        }elseif ($this->actionNumber == null && $this->type == 1 && $this->time > strtotime(date('Y-m-d') .'23:50:00')){
+            //隔天开盘
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'00:10:00');
+
+            $this->stopTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'00:30:00');
+
+        }elseif ($this->actionNumber == null && $this->type == 1 && $this->time < strtotime(date('Y-m-d') .'00:30:00')){
+
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'00:10:00');
+
+            $this->stopTime = strtotime(date('Y-m-d') .'00:30:00');
+        }
+
+
+
+
+        //处理北京PK拾
+        if($this->actionNumber == null && $this->type == 50 && $this->time > strtotime(date('Y-m-d') .'00:00:00')  && $this->time < strtotime(date('Y-m-d') .'09:30:00')){
+
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d') .'09:10:00');
+
+            $this->stopTime = strtotime(date('Y-m-d') .'09:30:00');
+
+        }elseif ($this->actionNumber == null && $this->type == 50 && $this->time > strtotime(date('Y-m-d') .'23:50:00')){
+
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'09:10:00');
+
+            $this->stopTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'09:30:00');
+        }
+
+
+
+
+        //处理幸运飞艇
+        if($this->actionNumber == null && $this->type == 55 && $this->time > strtotime(date('Y-m-d') .'04:04:00')  && $this->time < strtotime(date('Y-m-d') .'13:04:00')){
+
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d') .'13:04:00');
+
+            $this->stopTime = strtotime(date('Y-m-d') .'13:09:00');
+
+        }elseif ($this->actionNumber == null && $this->type == 55 && $this->time > strtotime(date('Y-m-d') .'23:59:00')){
+
+            $this->actionNumber = 132;
+
+            $this->actionTime = strtotime(date('Y-m-d') .'23:59:00');
+
+            $this->stopTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'00:04:00');
+
+        }elseif ($this->actionNumber == null && $this->type == 55 && $this->time < strtotime(date('Y-m-d') .'00:04:00')){
+            //小于00:04:00 也是132期
+            $this->actionNumber = 132;
+
+            $this->actionTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '- 1 day')).'23:59:00');
+
+            $this->stopTime = strtotime(date('Y-m-d') .'00:04:00');
+
+        }
+
+
+        //处理极速赛车
+        if($this->actionNumber == null && $this->type == 99 && $this->time > strtotime(date('Y-m-d') .'23:59:18')){
+
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d') .'23:59:18');
+
+            $this->stopTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '+ 1 day')) .'00:00:33');
+
+        }elseif ($this->actionNumber == null && $this->type == 99 && $this->time < strtotime(date('Y-m-d') .'00:00:33')){
+
+            $this->actionNumber = 1;
+
+            $this->actionTime = strtotime(date('Y-m-d',strtotime(date('Y-m-d') . '- 1 day')).'23:59:18');
+
+            $this->stopTime = strtotime(date('Y-m-d') .'00:00:33');
+        }
+
 
         //处理香港六合彩没开盘
         if ($this->actionNumber == null && $key == count($actionlist) - 1 && $this->type == 70) {
@@ -179,11 +280,15 @@ class Caipiao
         }
 
 
+        //根据封盘的时间戳来调整天数
+        $this->timestamp = $this->stopTime;
+
+
         $this->actionTime = $this->actionTime - $this->time;
 
         $this->stopTime = $this->stopTime - $this->time;
 
-
+//        dump($this->stopTime);
     }
 
     /**获得赔率
