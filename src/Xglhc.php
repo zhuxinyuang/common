@@ -93,8 +93,8 @@ class Xglhc
      */
 
 
-  public function BuLings ( int $num ):string {
-        if ( $num<10 ) {
+  public function BuLings ( string $num ):string {
+        if ( (int)$num < 10 ) {
             $num = '0'.(string)$num;
         }
         return (string)$num;
@@ -104,9 +104,9 @@ class Xglhc
      * @param int $num
      * @return string
      */
-  public  function DaXiao(int $num):string
+  public  function DaXiao(string $num):string
     {
-        if ($num == 49) {
+        if ($num == '49') {
             return '49';
 
         }
@@ -121,14 +121,14 @@ class Xglhc
      * @param int $num
      * @return string
      */
-  public  function WeiShuDaXiao(int $num):string
+  public  function WeiShuDaXiao(string $num):string
     {
-        if ($num == 49) {
+        if ($num == '49') {
 
-            return '49';
+           return '49';
 
         }
-        $zhws = substr((string)$num, strlen((string)$num) - 1);
+        $zhws = (int)substr($num, strlen($num) - 1);
 
         if ($zhws >= 5) {
 
@@ -145,16 +145,16 @@ class Xglhc
      * @param int $num
      * @return string
      */
- public   function WeiShuDanShuang(int $num):string
+ public   function WeiShuDanShuang(string $num):string
     {
-        if ($num == 49) {
+        if ($num == '49') {
 
             return '49';
 
         }
-        $zhws = substr((string)$num, strlen((string)$num) - 1);
+        $zhws = (int)substr($num, strlen($num) - 1);
 
-        if ($num % 2 == 0) {
+        if ($zhws % 2 == 0) {
 
             return '尾双';
 
@@ -169,21 +169,22 @@ class Xglhc
      * @param int $num
      * @return string
      */
- public   function HeShuDaXiao(int $num):string
+ public   function HeShuDaXiao(string $num):string
     {
-        if ($num == 49) {
+        if ($num == '49') {
 
             return '49';
 
         }
 
-        $num1 = substr((string)$num, 0, 1);
+        $num1 = (int)substr($num, 0, 1);
 
-        $num2 = substr((string)$num, 1, 1);
+        $num2 = (int)substr($num, 1, 1);
+        
 
         $num3 = $num1 + $num2;
 
-        if ($num3 > 6) {
+        if ($num3 >= 7) {
 
             return '合大';
 
@@ -198,16 +199,16 @@ class Xglhc
      * @param int $num
      * @return string
      */
- public   function HeShuDanShuang(int $num) :string
+ public   function HeShuDanShuang(string $num) :string
     {
-        if ($num == 49) {
+        if ($num == '49') {
 
             return '49';
 
         }
-        $num1 = substr((string)$num, 0, 1);
+        $num1 = (int)substr($num, 0, 1);
 
-        $num2 = substr((string)$num, 1, 1);
+        $num2 = (int)substr($num, 1, 1);
 
         $num3 = $num1 + $num2;
 
@@ -243,9 +244,9 @@ class Xglhc
      * @param int $num
      * @return string
      */
- public   function ZongHeDaXiao(int $num):string
+ public   function ZongHeDaXiao(string $num):string
     {
-        if ($num >= 175) {
+        if ((int)$num >= 175) {
 
             return '总和大';
 
